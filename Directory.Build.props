@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Authors>anomalyco</Authors>
+    <Description>Jasypt-compatible password-based encryption library for .NET with AES-256-CBC, SM4-GCM, and SM4-CBC.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/anomalyco/nasypt-lite</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>encryption;security;nasypt;jasypt;sm4;sm3;aes;pbkdf2;configuration</PackageTags>
+  </PropertyGroup>
+</Project>

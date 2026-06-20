@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/NasyptLite.Cli/NasyptLite.Cli.csproj" />
+    <Project Path="src/NasyptLite.SourceGen/NasyptLite.SourceGen.csproj" />
+    <Project Path="src/NasyptLite/NasyptLite.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/NasyptLite.SourceGen.Tests/NasyptLite.SourceGen.Tests.csproj" />
+    <Project Path="tests/NasyptLite.Tests/NasyptLite.Tests.csproj" />
+  </Folder>
+</Solution>
