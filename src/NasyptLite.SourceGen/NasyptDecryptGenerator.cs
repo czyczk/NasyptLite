@@ -185,22 +185,40 @@ public class NasyptDecryptGenerator : IIncrementalGenerator
         sb.AppendLine("{");
         sb.AppendLine("    private bool _disposed;");
         sb.AppendLine();
-        sb.AppendLine("    public void DecryptEncFields(string password)");
-        sb.AppendLine("    {");
-        foreach (var prop in classInfo.Properties)
+        void EmitDecryptBody(string algorithmExpr, bool isStringAlgo)
         {
-            var nullGuard = prop.IsNullable ? $"{prop.Name} is not null && " : "";
-            sb.AppendLine($"        if ({nullGuard}Nasypt.IsEncValue({prop.Name}))");
-            if (prop.Algorithm is not null)
+            foreach (var prop in classInfo.Properties)
             {
-                var alg = FormatAlgorithm(prop.Algorithm);
-                sb.AppendLine($"            {prop.Name} = Nasypt.DecryptEncWith({alg}, {prop.Name}, password);");
-            }
-            else
-            {
-                sb.AppendLine($"            {prop.Name} = Nasypt.DecryptEnc({prop.Name}, password);");
+                var nullGuard = prop.IsNullable ? $"{prop.Name} is not null && " : "";
+                sb.AppendLine($"        if ({nullGuard}Nasypt.IsEncValue({prop.Name}))");
+
+                if (isStringAlgo)
+                {
+                    if (prop.Algorithm is not null)
+                    {
+                        var alg = FormatAlgorithm(prop.Algorithm);
+                        sb.AppendLine($"            {prop.Name} = Nasypt.DecryptEncWith({alg}, {prop.Name}, password);");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"            {prop.Name} = Nasypt.DecryptEnc({prop.Name}, password);");
+                    }
+                }
+                else
+                {
+                    sb.AppendLine($"            {prop.Name} = Nasypt.DecryptEncWith({algorithmExpr}, {prop.Name}, password);");
+                }
             }
         }
+
+        sb.AppendLine("    public void DecryptEncFields(string password)");
+        sb.AppendLine("    {");
+        EmitDecryptBody(algorithmExpr: "", isStringAlgo: true);
+        sb.AppendLine("    }");
+        sb.AppendLine();
+        sb.AppendLine("    public void DecryptEncFieldsWithAlgorithm(Algorithm algorithm, string password)");
+        sb.AppendLine("    {");
+        EmitDecryptBody(algorithmExpr: "algorithm", isStringAlgo: false);
         sb.AppendLine("    }");
         sb.AppendLine();
         sb.AppendLine("    public void ClearSensitiveFields()");
