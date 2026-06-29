@@ -121,7 +121,7 @@ public sealed class Sm4CompatTests
         generator.Init(password, salt, 10000);
         var keyParam = (KeyParameter)generator.GenerateDerivedMacParameters(48 * 8);
         var derived = keyParam.GetKey();
-        Assert.AreEqual(48, derived.Length);
+        Assert.HasCount(48, derived);
     }
 
     [TestMethod]

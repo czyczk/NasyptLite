@@ -1,5 +1,6 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.Reflection;
 using NasyptLite;
 
 const int MinRecommendedPasswordLength = 8;
@@ -51,6 +52,12 @@ var quietOption = new Option<bool>(
     Required = false
 };
 
+if (args is ["-V"])
+{
+    Console.WriteLine(GetVersion());
+    return 0;
+}
+
 var rootCommand = new RootCommand("nasypt-lite: Jasypt-compatible encryption/decryption for .NET");
 
 var encryptCommand = new Command("encrypt", "Encrypt a plaintext value.");
@@ -69,6 +76,10 @@ decryptCommand.Add(algorithmOption);
 decryptCommand.Add(iterationsOption);
 decryptCommand.Add(quietOption);
 decryptCommand.SetAction(HandleDecrypt);
+
+var versionCommand = new Command("version", "Show version information.");
+versionCommand.SetAction(HandleVersion);
+rootCommand.Add(versionCommand);
 
 rootCommand.Add(encryptCommand);
 rootCommand.Add(decryptCommand);
@@ -166,4 +177,14 @@ static void HandleDecrypt(ParseResult parseResult)
         Console.Error.WriteLine($"Decryption failed: {ex.Message}");
         Environment.Exit(1);
     }
+}
+
+static string GetVersion() =>
+    Assembly.GetEntryAssembly()?
+        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+        .InformationalVersion ?? "unknown";
+
+static void HandleVersion(ParseResult parseResult)
+{
+    Console.WriteLine(GetVersion());
 }

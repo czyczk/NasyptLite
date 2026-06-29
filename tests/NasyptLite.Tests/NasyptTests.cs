@@ -540,7 +540,7 @@ public sealed class NasyptTests
     public void SupportedAlgorithms_ContainsAllThree()
     {
         var algos = Nasypt.SupportedAlgorithms;
-        Assert.AreEqual(3, algos.Count);
+        Assert.HasCount(3, algos);
         CollectionAssert.Contains((System.Collections.ICollection)algos, Algorithm.PBEWithHMACSHA512AndAES_256);
         CollectionAssert.Contains((System.Collections.ICollection)algos, Algorithm.PBEWithHMACSM3AndSM4_GCM);
         CollectionAssert.Contains((System.Collections.ICollection)algos, Algorithm.PBEWithHMACSM3AndSM4_CBC);
